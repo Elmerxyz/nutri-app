@@ -10,6 +10,7 @@ import {
 import { ContactsComponent } from './features/contacts-feature/contacts/contacts.component';
 import { MyRecipesComponent } from './features/recipes-feature/my-recipes/my-recipes.component';
 import { RecomendationsComponent } from './features/recomendatios-feature/recomendations/recomendations.component';
+import { RecipesComponent } from './features/recipes-feature/recipes/recipes.component';
 
 export const routes: Routes = [
   { path: '', redirectTo: 'auth/login', pathMatch: 'full' },
@@ -27,8 +28,8 @@ export const routes: Routes = [
     component: MainComponent,
     children: [
       {
-        path: 'home',
-        component: HomeComponent,
+        path: 'recipes',
+        component:RecipesComponent,
         // canActivate: [authGuardAdmin],
       },
 

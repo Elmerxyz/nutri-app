@@ -11,7 +11,7 @@ export const MENU_OPTIONS: MenuNode[] = [
     key: 'home',
     label: 'Inicio',
     icon: 'pi pi-cart-minus',
-    routerLink: '/home',
+    routerLink: '/recipes',
   }, 
   {
     key: 'contacts',
