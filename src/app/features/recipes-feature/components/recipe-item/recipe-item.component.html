@@ -1,0 +1,91 @@
+<div
+  class="bg-white rounded-2xl shadow-md hover:shadow-lg transition-all duration-300 overflow-hidden  border border-primary-100"
+>
+  <!-- Header con imagen y botón favorito -->
+  <div class="relative">
+    <img
+      [src]="meal().thumbnail_url"
+      [alt]="meal().name"
+      class="w-full h-48 object-cover"
+    />
+    <div class="absolute top-3 right-3">
+      <button
+        class="bg-white/80 backdrop-blur-sm rounded-full p-2 hover:bg-white transition-all"
+      >
+        <i class="pi pi-heart text-primary-500 hover:text-primary-600"></i>
+      </button>
+    </div>
+    <!-- Badge del día -->
+    <div class="absolute bottom-3 left-3">
+      <span
+        class="bg-primary-500 text-white px-3 py-1 rounded-full text-sm font-medium"
+      >
+        Día {{ meal().day }}
+      </span>
+    </div>
+  </div>
+
+  <!-- Contenido principal -->
+  <div class="p-4">
+    <!-- Título -->
+    <h3 class="font-bold text-md text-gray-800 pb-3 line-clamp-2">
+      {{ meal().name }}
+    </h3>
+
+    <!-- Tags de condiciones médicas -->
+    <div class="pb-3">
+      <p class="text-sm text-gray-600 pb-2 font-medium">Ideal para:</p>
+      <div class="flex flex-wrap gap-2">
+        @for (condition of meal().suitable_for; track $index) {
+        <p-tag
+          [value]="condition"
+          styleClass="bg-primary-100 text-primary-800 border-primary-200"
+          class="text-xs"
+        >
+        </p-tag>
+        }
+      </div>
+    </div>
+
+    <!-- Tags de tipos de comida -->
+    <div class="pb-4">
+      <p class="text-sm text-gray-600 pb-2 font-medium">Tipo de comida:</p>
+      <div class="flex flex-wrap gap-2">
+        @for (mealType of meal().meal_types; track $index) {
+        <p-tag
+          [value]="mealType"
+          styleClass="bg-primary-50 text-primary-700 border-primary-300"
+          class="text-xs"
+        >
+        </p-tag>
+        }
+      </div>
+    </div>
+
+    <!-- Footer con botón de acción -->
+    <div
+      class="flex items-center justify-between pt-3 border-t border-gray-100"
+    >
+      <div class="text-sm text-gray-500">
+        <span>{{ meal().total_days }} días de plan</span>
+      </div>
+
+      @if (meal().add_to_meal_plan_enabled) {
+      <button
+        class="bg-primary-500 hover:bg-primary-600 text-white px-4 py-2 rounded-lg font-medium transition-colors flex items-center gap-2"
+      >
+        <i class="pi pi-plus text-sm"></i>
+        Agregar
+      </button>
+      } @else {
+      <button
+        class="bg-gray-200 text-gray-500 px-4 py-2 rounded-lg font-medium cursor-not-allowed"
+        disabled
+      >
+        <i class="pi pi-check text-sm"></i>
+        Agregado
+      </button>
+      }
+    </div>
+  </div>
+</div>

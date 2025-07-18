@@ -1,0 +1,77 @@
+<div
+  class="bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden"
+>
+  <div class="relative">
+    <img
+      [src]="contact().imageUrl"
+      [alt]="contact().name"
+      class="w-full h-48 object-cover"
+    />
+    <div class="absolute top-4 right-4">
+      <span
+        [class]="
+          colorConfig.badgeClass +
+          ' text-white px-3 py-1 rounded-full text-sm font-medium'
+        "
+      >
+        {{ contact().badge.text }}
+      </span>
+    </div>
+  </div>
+
+  <div class="p-6">
+    <h3 class="text-xl font-bold text-gray-900 pb-2">
+      {{ contact().name }}
+    </h3>
+    <p [class]="colorConfig.titleClass + ' font-medium pb-3'">
+      {{ contact().title }}
+    </p>
+    <p class="text-gray-600 text-sm pb-4">
+      {{ contact().description }}
+    </p>
+
+    <!-- Contact Methods -->
+    <div class="flex flex-col gap-3">
+      <a
+        [href]="'mailto:' + contact().email"
+        [class]="
+          'flex items-center gap-3 text-gray-700 transition-colors ' +
+          colorConfig.hoverClass
+        "
+        (click)="onEmailLinkClick()"
+      >
+        <div [class]="colorConfig.iconBgClass + ' p-2 rounded-lg'">
+          <i [class]="'pi pi-envelope ' + colorConfig.iconClass"></i>
+        </div>
+        <span class="text-sm">{{ contact().email }}</span>
+      </a>
+
+      <a
+        [href]="'tel:' + contact().phone"
+        [class]="
+          'flex items-center gap-3 text-gray-700 transition-colors ' +
+          colorConfig.hoverClass
+        "
+        (click)="onPhoneLinkClick()"
+      >
+        <div [class]="colorConfig.iconBgClass + ' p-2 rounded-lg'">
+          <i [class]="'pi pi-phone ' + colorConfig.iconClass"></i>
+        </div>
+        <span class="text-sm">{{ contact().phone }}</span>
+      </a>
+
+      <button
+        [class]="
+          colorConfig.buttonClass +
+          ' ' +
+          colorConfig.buttonHoverClass +
+          ' text-white py-3 rounded-lg font-medium  transition-colors flex items-center justify-center gap-2 w-full'
+        "
+        (click)="onScheduleClick()"
+      >
+        <i class="pi pi-calendar"></i>
+        {{ contact().buttonText }}
+      </button>
+    </div>
+  </div>
+</div>

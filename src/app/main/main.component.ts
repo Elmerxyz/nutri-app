@@ -17,7 +17,12 @@ import { BranchesForSelectedComponent } from '../features/branches-feature/branc
     SidebarComponent,
     HeaderComponent,
     RouterOutlet,
+<<<<<<< HEAD
     BranchesForSelectedComponent,
+=======
+    ListboxModule,
+    FormsModule,
+>>>>>>> 82af0fd9ecd5ba8015c59302a88feaf3c8f95b08
   ],
   templateUrl: './main.component.html',
   styleUrl: './main.component.scss',

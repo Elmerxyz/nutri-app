@@ -42,7 +42,7 @@ app-button.selected,
 app-button:hover {
   @apply text-primary-100 dark:text-primary-dark-100;
   i {
-    @apply font-semibold fill-primary-l-500 stroke-primary-l-500 dark:fill-primary-dark-500 dark:stroke-primary-dark-500 duration-300 ease-in-out;
+    @apply font-semibold fill-primary-500 stroke-primary-500 dark:fill-primary-dark-500 dark:stroke-primary-dark-500 duration-300 ease-in-out;
   }
 }
 
