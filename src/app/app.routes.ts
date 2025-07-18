@@ -1,23 +1,15 @@
 import { Routes } from '@angular/router';
 import { LoginComponent } from './features/auth-feature/login/login.component';
-import { UsersComponent } from './features/users-feature/users/users.component';
 import { MainComponent } from './main/main.component';
 import { HomeComponent } from './features/dashboard-feature/home/home.component';
-import { MainServicesPackagesComponent } from './features/services-packages-feature/main-services-packages/main-services-packages.component';
-import { UserProfileComponent } from './features/users-feature/user-profile/user-profile.component';
-import { BranchesComponent } from './features/branches-feature/branches/branches.component';
-import { SalesComponent } from './features/sales-feature/sales/sales.component';
-import { ClientsComponent } from './features/clients-feature/clients/clients.component';
-import { ReportsComponent } from './features/reports-feature/reports/reports.component';
+
 import { PasswordRecoveryComponent } from './features/auth-feature/password-recovery/password-recovery.component';
-import { ConfigurationsComponent } from './features/configuration-feature/configurations/configurations.component';
-import { ManifestsComponent } from './features/manifests-feature/manifests/manifests.component';
 import {
-  authGuardAdmin,
-  authGuardGerent,
-  authGuardSeller,
   publicGuard,
 } from './core/guards/auth.guard';
+import { ContactsComponent } from './features/contacts-feature/contacts/contacts.component';
+import { MyRecipesComponent } from './features/recipes-feature/my-recipes/my-recipes.component';
+import { RecomendationsComponent } from './features/recomendatios-feature/recomendations/recomendations.component';
 
 export const routes: Routes = [
   { path: '', redirectTo: 'auth/login', pathMatch: 'full' },
@@ -31,59 +23,29 @@ export const routes: Routes = [
     ],
   },
   {
-    path: 'luxury',
+    path: 'nutri',
     component: MainComponent,
     children: [
       {
         path: 'home',
         component: HomeComponent,
-        canActivate: [authGuardAdmin],
+        // canActivate: [authGuardAdmin],
+      },
+
+      {
+        path: 'contacts',
+        component: ContactsComponent,
+        // canActivate: [authGuardSeller],
       },
       {
-        path: 'users',
-        component: UsersComponent,
-        canActivate: [authGuardAdmin],
+        path: 'my-recipes',
+        component:MyRecipesComponent
       },
       {
-        path: 'profile',
-        component: UserProfileComponent,
-        canActivate: [authGuardSeller],
-      },
-      {
-        path: 'services_packages',
-        component: MainServicesPackagesComponent,
-        canActivate: [authGuardSeller],
-      },
-      {
-        path: 'branches',
-        component: BranchesComponent,
-        canActivate: [authGuardAdmin],
-      },
-      {
-        path: 'sales',
-        component: SalesComponent,
-        canActivate: [authGuardSeller],
-      },
-      {
-        path: 'clients',
-        component: ClientsComponent,
-        canActivate: [authGuardSeller],
-      },
-      {
-        path: 'reports',
-        component: ReportsComponent,
-        canActivate: [authGuardAdmin],
-      },
-      {
-        path: 'manifests',
-        component: ManifestsComponent,
-        canActivate: [authGuardSeller],
-      },
-      // {
-      //   path: 'configurations',
-      //   component: ConfigurationsComponent,
-      //   canActivate: [authGuardAdmin],
-      // },
+        path: 'recomendations',
+        component:RecomendationsComponent
+      }
+
     ],
   },
 ];

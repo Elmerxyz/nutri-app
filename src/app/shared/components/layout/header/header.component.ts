@@ -24,17 +24,7 @@ export class HeaderComponent {
   private localStorageService = inject(LocalstorageService);
   private elementRef = inject(ElementRef); //nos permite acceder al DOM
   viewMenu = signal(false);
-  branchSelected = toSignal(this.localStorageService.getBranchId()); //obtiene el id de la sucursal seleccionada
-  branches = toSignal<Option[]>(
-    this.localStorageService.getBranches().pipe(
-      map((branches: any) =>
-        branches.map((item: any) => ({
-          label: item.address,
-          value: item.branchId,
-        }))
-      )
-    )
-  );
+ 
   admin = signal<UserAuthorized>({} as UserAuthorized);
   constructor() {
     this.admin.set(this.localStorageService.getUserAuthorized());
