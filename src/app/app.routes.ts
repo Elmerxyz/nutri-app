@@ -8,9 +8,9 @@ import {
   publicGuard,
 } from './core/guards/auth.guard';
 import { ContactsComponent } from './features/contacts-feature/contacts/contacts.component';
-import { MyRecipesComponent } from './features/recipes-feature/my-recipes/my-recipes.component';
+import { MyRecipesComponent } from './features/recipes-feature/pages/my-recipes/my-recipes.component';
 import { RecomendationsComponent } from './features/recomendatios-feature/recomendations/recomendations.component';
-import { RecipesComponent } from './features/recipes-feature/recipes/recipes.component';
+import { RecipesComponent } from './features/recipes-feature/pages/recipes/recipes.component';
 
 export const routes: Routes = [
   { path: '', redirectTo: 'auth/login', pathMatch: 'full' },

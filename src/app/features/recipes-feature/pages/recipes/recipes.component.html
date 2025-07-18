@@ -1,0 +1,129 @@
+<main>
+  <section class="bg-white border-gray-200 w-full">
+    <div class="mx-auto">
+      <!-- Título Principal -->
+      <div class=" ">
+        <h1 class="text-xl font-bold text-gray-900 pb-3">Recetas</h1>
+      </div>
+
+      <!-- Filtros Mejorados -->
+      <div class="bg-gray-50 w-full rounded-2xl p-6 pb-6">
+        <div class="flex flex-col lg:flex-row gap-6">
+          <!-- Filtro por Condición Médica -->
+          <div class="flex-1">
+            <label class="block text-sm font-semibold text-gray-700 pb-3">
+              <i class="pi pi-heart text-primary-500 mr-2"></i>
+              Condición Médica
+            </label>
+            <p-selectbutton
+              [options]="medicalConditionOptions"
+              [(ngModel)]="selectedCondition"
+              (ngModelChange)="onConditionChange()"
+              optionLabel="label"
+              optionValue="value"
+              styleClass="w-full custom-select-button"
+            />
+          </div>
+
+          <!-- Filtro por Tipo de Comida -->
+          <div class="flex-1">
+            <label class="block text-sm font-semibold text-gray-700 pb-3">
+              <i class="pi pi-clock text-primary-500 mr-2"></i>
+              Tipo de Comida
+            </label>
+            <p-selectbutton
+              [options]="mealTypeOptions"
+              [(ngModel)]="selectedMealType"
+              (ngModelChange)="onMealTypeChange()"
+              optionLabel="label"
+              optionValue="value"
+              styleClass="w-full custom-select-button"
+            />
+          </div>
+
+          <!-- Botón para limpiar filtros -->
+          <div class="flex items-end">
+            <button
+              (click)="clearFilters()"
+              class="bg-white hover:bg-gray-100 text-gray-700 border border-gray-300 px-6 py-3 rounded-xl font-medium transition-all flex items-center gap-2 shadow-sm hover:shadow-md"
+            >
+              <i class="pi pi-refresh text-sm"></i>
+              <span class="hidden sm:inline">Limpiar</span>
+            </button>
+          </div>
+        </div>
+        <div class="flex gap-1 items-center">
+          <app-input-form
+            type="text"
+            [required]="true"
+            errorType=" "
+            [(ngModel)]="searchQuery"
+            (input)="onSearchChange()"
+            placeholder="Buscar recetas"
+          />
+          <app-button
+            icon="pi pi-search"
+            moreClasses=" bg-primary-500 py-2 h-11 "
+            text=""
+            class="rounded-full"
+            (click)="performSearch()"
+          />
+        </div>
+      </div>
+
+      <!-- Resultados y Paginador -->
+      <div
+        class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4"
+      >
+        <!-- Contador de resultados -->
+        <div class="flex items-center gap-4">
+          <div class="bg-primary-100 text-primary-800 px-4 py-2 rounded-lg">
+            <span class="font-bold">{{ filteredMeals.length }}</span>
+            <span class="ml-1">{{
+              filteredMeals.length === 1
+                ? "receta encontrada"
+                : "recetas encontradas"
+            }}</span>
+          </div>
+
+          @if (searchQuery) {
+          <div class="text-sm text-gray-600">
+            Resultados para:
+            <span class="font-medium">"{{ searchQuery }}"</span>
+          </div>
+          }
+        </div>
+
+        <!-- Paginador -->
+        <div class="flex items-center gap-4">
+          <div class="text-sm text-gray-600">
+            Mostrando {{ currentPage * itemsPerPage + 1 }} -
+            {{
+              Math.min((currentPage + 1) * itemsPerPage, filteredMeals.length)
+            }}
+            de {{ filteredMeals.length }}
+          </div>
+
+          <p-paginator
+            [rows]="itemsPerPage"
+            [totalRecords]="filteredMeals.length"
+            [first]="currentPage * itemsPerPage"
+            (onPageChange)="onPageChange($event)"
+            styleClass="custom-paginator"
+            [showCurrentPageReport]="false"
+            [showJumpToPageDropdown]="false"
+            [showPageLinks]="true"
+            [pageLinkSize]="3"
+          ></p-paginator>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section
+    class="grid grid-cols-1 sm:grid-cols-2 pt-4 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-4 sm:gap-6"
+  >
+    @for (item of mealPlan.meals; track $index) {
+    <app-recipe-item [meal]="item" />
+    }
+  </section>
+</main>
