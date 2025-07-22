@@ -1,17 +1,17 @@
-<main>
-  <section class="bg-white border-gray-200 w-full">
+<main class="bg-white bg-white dark:bg-transparent  min-h-screen">
+  <section class="border-gray-200 w-full">
     <div class="mx-auto">
       <!-- Título Principal -->
-      <div class=" ">
-        <h1 class="text-xl font-bold text-gray-900 pb-3">Recetas</h1>
+      <div>
+        <h1 class="text-xl font-bold text-gray-900 dark:text-gray-100 pb-3">Recetas</h1>
       </div>
 
       <!-- Filtros Mejorados -->
-      <div class="bg-gray-50 w-full rounded-2xl p-6 pb-6">
+      <div class="bg-gray-50 dark:bg-gray-800 w-full rounded-2xl p-6 pb-6">
         <div class="flex flex-col lg:flex-row gap-6">
           <!-- Filtro por Condición Médica -->
           <div class="flex-1">
-            <label class="block text-sm font-semibold text-gray-700 pb-3">
+            <label class="block text-sm font-semibold text-gray-700 dark:text-gray-300 pb-3">
               <i class="pi pi-heart text-primary-500 mr-2"></i>
               Condición Médica
             </label>
@@ -27,7 +27,7 @@
 
           <!-- Filtro por Tipo de Comida -->
           <div class="flex-1">
-            <label class="block text-sm font-semibold text-gray-700 pb-3">
+            <label class="block text-sm font-semibold text-gray-700 dark:text-gray-300 pb-3">
               <i class="pi pi-clock text-primary-500 mr-2"></i>
               Tipo de Comida
             </label>
@@ -45,7 +45,7 @@
           <div class="flex items-end">
             <button
               (click)="clearFilters()"
-              class="bg-white hover:bg-gray-100 text-gray-700 border border-gray-300 px-6 py-3 rounded-xl font-medium transition-all flex items-center gap-2 shadow-sm hover:shadow-md"
+              class="bg-white dark:bg-gray-900 hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300 border border-gray-300 dark:border-gray-700 px-6 py-3 rounded-xl font-medium transition-all flex items-center gap-2 shadow-sm hover:shadow-md"
             >
               <i class="pi pi-refresh text-sm"></i>
               <span class="hidden sm:inline">Limpiar</span>
@@ -60,10 +60,11 @@
             [(ngModel)]="searchQuery"
             (input)="onSearchChange()"
             placeholder="Buscar recetas"
+            class="dark:bg-gray-900 dark:text-gray-100"
           />
           <app-button
             icon="pi pi-search"
-            moreClasses=" bg-primary-500 py-2 h-11 "
+            moreClasses="bg-primary-500 py-2 h-11 rounded-full"
             text=""
             class="rounded-full"
             (click)="performSearch()"
@@ -72,12 +73,10 @@
       </div>
 
       <!-- Resultados y Paginador -->
-      <div
-        class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4"
-      >
+      <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
         <!-- Contador de resultados -->
         <div class="flex items-center gap-4">
-          <div class="bg-primary-100 text-primary-800 px-4 py-2 rounded-lg">
+          <div class="bg-primary-100 dark:bg-primary-900 text-primary-800 dark:text-primary-200 px-4 py-2 rounded-lg">
             <span class="font-bold">{{ filteredMeals.length }}</span>
             <span class="ml-1">{{
               filteredMeals.length === 1
@@ -87,7 +86,7 @@
           </div>
 
           @if (searchQuery) {
-          <div class="text-sm text-gray-600">
+          <div class="text-sm text-gray-600 dark:text-gray-300">
             Resultados para:
             <span class="font-medium">"{{ searchQuery }}"</span>
           </div>
@@ -96,7 +95,7 @@
 
         <!-- Paginador -->
         <div class="flex items-center gap-4">
-          <div class="text-sm text-gray-600">
+          <div class="text-sm text-gray-600 dark:text-gray-300">
             Mostrando {{ currentPage * itemsPerPage + 1 }} -
             {{
               Math.min((currentPage + 1) * itemsPerPage, filteredMeals.length)

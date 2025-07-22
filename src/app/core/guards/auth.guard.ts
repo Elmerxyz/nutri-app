@@ -1,8 +1,5 @@
 import { inject } from '@angular/core';
-import {
-  CanActivateFn,
-  Router,
-} from '@angular/router';
+import { CanActivateFn, Router } from '@angular/router';
 import { firstValueFrom } from 'rxjs';
 import { AuthService } from '../services/auth-services/auth.service';
 
@@ -27,15 +24,4 @@ export const AuthGuard: CanActivateFn = async () => {
     return false;
   }
   return true;
-};
-
-export const AuthGuardUserName: CanActivateFn = async (route, state) => {
-  const router = routerInjection();
-  try {
-    await firstValueFrom(authService().session());
-    return router.createUrlTree(['/nutri']);
-  } catch (error) {
-    console.log(error);
-    return router.createUrlTree(['/auth/log-in']);
-  }
 };

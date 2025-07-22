@@ -1,14 +1,29 @@
-<div class="min-h-screen flex items-center justify-center bg-gradient-to-br from-primary-50 to-primary-100 px-4 sm:px-6 lg:px-8">
-  <div class="w-full max-w-md space-y-8 p-8 bg-white/90 backdrop-blur-sm rounded-2xl shadow-xl border border-primary-100">
-    <!-- Header -->
-    <div class="text-center space-y-4">
-      <i class="pi pi-whatsapp text-5xl text-primary-500"></i>
+<div
+  class="min-h-screen flex items-center justify-center bg-gradient-to-br from-primary-50 to-primary-100 px-4 sm:px-6 lg:px-8"
+>
+  <div
+    class="w-full max-w-md space-y-8 p-8 bg-white/90 backdrop-blur-sm rounded-2xl shadow-xl border border-primary-100"
+  >
+    <!-- Logo y Header -->
+    <div class="flex flex-col items-center space-y-4 pb-2">
+      <img
+        src="./images/logo.svg"
+        alt="Nutri Paz Logo"
+        class="w-16 h-16 rounded-full shadow"
+      />
       <h2 class="text-3xl font-bold tracking-tight text-gray-900">
         ¡Bienvenido!
       </h2>
-      <p class="text-sm text-gray-600">
-        Inicia sesión para acceder.
-      </p>
+      <p class="text-sm text-gray-600">Accede a tu cuenta para continuar</p>
+    </div>
+
+    <!-- Imagen decorativa opcional -->
+    <div class="flex justify-center  pb-2">
+      <img
+        src="https://yoelijocuidarme.es/wp-content/uploads/2019/01/alimentos-sanos-que-engordan-620x420@2x.jpg"
+        alt="Healthy Food"
+        class="rounded-xl shadow-sm object-cover w-full "
+      />
     </div>
 
     <!-- Botón de inicio de sesión con Google -->
@@ -18,14 +33,29 @@
         (click)="logInWithGoogle()"
         type="button"
       >
-        <img src="https://www.svgrepo.com/show/475656/google-color.svg" alt="Google" class="w-6 h-6" />
-        Iniciar sesión con Google
+        <img
+          src="https://www.svgrepo.com/show/475656/google-color.svg"
+          alt="Google"
+          class="w-6 h-6"
+        />
+        <span class="text-base font-medium">Iniciar sesión con Google</span>
       </button>
     </div>
-    
+
+    <!-- Divider -->
+    <div class="flex items-center py-4">
+      <div class="flex-grow border-t border-primary-100"></div>
+      <span class="px-3 text-xs text-gray-400">o</span>
+      <div class="flex-grow border-t border-primary-100"></div>
+    </div>
     <!-- Footer -->
-    <div class="mt-4 text-center text-sm text-gray-600">
-      <!-- <p>¿Necesitas ayuda? Contacta al administrador</p> -->
+    <div class="pt-4 text-center text-xs text-gray-500">
+      ¿Necesitas ayuda?
+      <a
+        href="mailto:soporte@nutriapp.com"
+        class="text-primary-500 hover:underline"
+        >Contáctanos</a
+      >
     </div>
   </div>
 </div>

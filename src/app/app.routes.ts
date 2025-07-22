@@ -2,11 +2,12 @@ import { Routes } from '@angular/router';
 import { LogInComponent } from './features/auth-feature/login/login.component';
 import { MainComponent } from './main/main.component';
 
-import { AuthGuard, AuthGuardUserName } from './core/guards/auth.guard';
+import { AuthGuard, ProtectedGuard } from './core/guards/auth.guard';
 import { ContactsComponent } from './features/contacts-feature/contacts/contacts.component';
 import { MyRecipesComponent } from './features/recipes-feature/pages/my-recipes/my-recipes.component';
 import { RecomendationsComponent } from './features/recomendatios-feature/recomendations/recomendations.component';
 import { RecipesComponent } from './features/recipes-feature/pages/recipes/recipes.component';
+import { ProfileComponent } from './features/user-feature/profile/profile.component';
 
 export const routes: Routes = [
   { path: '', redirectTo: 'auth/login', pathMatch: 'full' },
@@ -20,7 +21,8 @@ export const routes: Routes = [
   },
   {
     path: 'nutri',
-    component: MainComponent, 
+    component: MainComponent,
+    canActivate: [ProtectedGuard],
     children: [
       { path: '', redirectTo: 'recipes', pathMatch: 'full' },
       {
@@ -42,6 +44,7 @@ export const routes: Routes = [
         path: 'recomendations',
         component: RecomendationsComponent,
       },
+      { path: 'profile', component: ProfileComponent },
     ],
   },
 ];

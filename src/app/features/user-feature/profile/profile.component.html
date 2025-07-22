@@ -1,0 +1,143 @@
+<div class=" ">
+  <!-- Card principal -->
+  <div
+    class="mx-auto overflow-hidden bg-white dark:bg-gray-900 border border-gray-100 dark:border-gray-800"
+  >
+    <!-- Banner superior con degradado -->
+    <div
+      class="h-32 bg-gradient-to-r from-primary-400 to-primary-600 dark:from-primary-700 dark:to-primary-900 relative"
+    >
+      <!-- Logo flotante -->
+      <div
+        class="absolute -bottom-6 right-6 bg-white dark:bg-gray-800 rounded-full p-2 shadow-lg"
+      >
+        <img src="/images/logo.svg" alt="Nutri Paz Logo" class="w-10 h-10" />
+      </div>
+    </div>
+
+    <!-- Contenido del perfil -->
+    <div class="p-8">
+      <!-- Header con foto y nombre -->
+      <div class="flex flex-col items-center pb-8">
+        <!-- Foto con efecto mejorado -->
+        <div class="relative pb-4">
+          <div
+            class="absolute inset-0 bg-gradient-to-r from-primary-300 to-primary-500 rounded-full blur opacity-60"
+          ></div>
+          <img
+            [src]="userData?.photoURL"
+            alt="Foto de perfil"
+            class="relative w-36 h-36 rounded-full object-cover border-4 border-white dark:border-gray-800 shadow-xl"
+          />
+          <div
+            class="absolute bottom-1 right-1 bg-green-500 w-5 h-5 rounded-full border-2 border-white dark:border-gray-800"
+          ></div>
+        </div>
+
+        <!-- Nombre y proveedor -->
+        <h1 class="text-3xl font-bold text-gray-900 dark:text-white pb-2">
+          {{ userData?.displayName }}
+        </h1>
+        <div
+          class="flex items-center gap-2 bg-gray-50 dark:bg-gray-800 px-3 py-1 rounded-full"
+        >
+          <img
+            src="https://www.svgrepo.com/show/475656/google-color.svg"
+            alt="Google"
+            class="w-4 h-4"
+          />
+          <span
+            class="text-sm text-gray-600 dark:text-gray-400"
+            >{{ userData?.providerData?.[0]?.providerId }}</span
+          >
+        </div>
+      </div>
+
+      <!-- Tarjetas de información -->
+      <section class="flex justify-center">
+        <div
+          class="grid grid-cols-1 md:grid-cols-2 w-full max-w-3xl mx-auto gap-6"
+        >
+          <!-- Tarjeta de Email -->
+          <div
+            class="bg-white dark:bg-gray-800 rounded-2xl p-5 border border-gray-100 dark:border-gray-700 shadow-sm hover:shadow-md transition-shadow"
+          >
+            <div class="flex items-start gap-4">
+              <div class="bg-primary-50 dark:bg-primary-900/30 p-3 rounded-xl">
+                <i
+                  class="pi pi-envelope text-primary-600 dark:text-primary-400 text-xl"
+                ></i>
+              </div>
+              <div class="flex-1">
+                <p
+                  class="text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wide"
+                >
+                  Correo electrónico
+                </p>
+                <p
+                  class="text-lg pt-4 font-medium text-gray-900 dark:text-white break-all "
+                >
+                  {{ userData?.email }}
+                </p>
+                <p-tag
+                  [severity]="userData?.emailVerified ? 'success' : 'danger'"
+                  [value]="
+                    userData?.emailVerified ? 'Verificado' : 'No verificado'
+                  "
+                  [icon]="
+                    userData?.emailVerified ? 'pi pi-check' : 'pi pi-times'
+                  "
+                  styleClass="mt-2 text-xs"
+                ></p-tag>
+              </div>
+            </div>
+          </div>
+
+          <!-- Tarjeta de Actividad -->
+          <div
+            class="bg-white dark:bg-gray-800 rounded-2xl p-5 border border-gray-100 dark:border-gray-700 shadow-sm hover:shadow-md transition-shadow"
+          >
+            <div class="flex items-start gap-4">
+              <div class="bg-primary-50 dark:bg-primary-900/30 p-3 rounded-xl">
+                <i
+                  class="pi pi-calendar text-primary-600 dark:text-primary-400 text-xl"
+                ></i>
+              </div>
+              <div class="flex-1">
+                <p
+                  class="text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wide"
+                >
+                  Actividad
+                </p>
+                <div class="space-y-3 pt-2">
+                  <div class="flex items-center gap-2">
+                    <i class="pi pi-sign-in text-green-500"></i>
+                    <span class="text-sm text-gray-800 dark:text-gray-200"
+                      >Último acceso:
+                      {{
+                        userData?.lastLoginAt
+                          ? (userData.lastLoginAt | date : "medium")
+                          : "N/A"
+                      }}</span
+                    >
+                  </div>
+                  <div class="flex items-center gap-2">
+                    <i class="pi pi-user-plus text-blue-500"></i>
+                    <span class="text-sm text-gray-800 dark:text-gray-200"
+                      >Cuenta creada:
+                      {{
+                        userData?.createdAt
+                          ? (userData.createdAt | date : "medium")
+                          : "N/A"
+                      }}</span
+                    >
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+  </div>
+</div>

@@ -1,5 +1,5 @@
 <div
-  class="bg-white rounded-2xl shadow-md hover:shadow-lg transition-all duration-300 overflow-hidden  border border-primary-100"
+  class="bg-white dark:bg-gray-900 rounded-2xl shadow-md hover:shadow-lg transition-all duration-300 overflow-hidden border border-primary-100 dark:border-gray-800"
 >
   <!-- Header con imagen y botón favorito -->
   <div class="relative">
@@ -10,9 +10,9 @@
     />
     <div class="absolute top-3 right-3">
       <button
-        class="bg-white/80 backdrop-blur-sm rounded-full p-2 hover:bg-white transition-all"
+        class="bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm rounded-full p-2 hover:bg-white dark:hover:bg-gray-700 transition-all"
       >
-        <i class="pi pi-heart text-primary-500 hover:text-primary-600"></i>
+        <i class="pi pi-heart text-primary-500 dark:text-primary-400 hover:text-primary-600"></i>
       </button>
     </div>
     <!-- Badge del día -->
@@ -28,18 +28,18 @@
   <!-- Contenido principal -->
   <div class="p-4">
     <!-- Título -->
-    <h3 class="font-bold text-md text-gray-800 pb-3 line-clamp-2">
+    <h3 class="font-bold text-md text-gray-800 dark:text-gray-100 pb-3 line-clamp-2">
       {{ meal().name }}
     </h3>
 
     <!-- Tags de condiciones médicas -->
     <div class="pb-3">
-      <p class="text-sm text-gray-600 pb-2 font-medium">Ideal para:</p>
+      <p class="text-sm text-gray-600 dark:text-gray-300 pb-2 font-medium">Ideal para:</p>
       <div class="flex flex-wrap gap-2">
         @for (condition of meal().suitable_for; track $index) {
         <p-tag
           [value]="condition"
-          styleClass="bg-primary-100 text-primary-800 border-primary-200"
+          styleClass="bg-primary-100 dark:bg-primary-900 text-primary-800 dark:text-primary-200 border-primary-200 dark:border-primary-800"
           class="text-xs"
         >
         </p-tag>
@@ -49,12 +49,12 @@
 
     <!-- Tags de tipos de comida -->
     <div class="pb-4">
-      <p class="text-sm text-gray-600 pb-2 font-medium">Tipo de comida:</p>
+      <p class="text-sm text-gray-600 dark:text-gray-300 pb-2 font-medium">Tipo de comida:</p>
       <div class="flex flex-wrap gap-2">
         @for (mealType of meal().meal_types; track $index) {
         <p-tag
           [value]="mealType"
-          styleClass="bg-primary-50 text-primary-700 border-primary-300"
+          styleClass="bg-primary-50 dark:bg-primary-950 text-primary-700 dark:text-primary-200 border-primary-300 dark:border-primary-800"
           class="text-xs"
         >
         </p-tag>
@@ -64,9 +64,9 @@
 
     <!-- Footer con botón de acción -->
     <div
-      class="flex items-center justify-between pt-3 border-t border-gray-100"
+      class="flex items-center justify-between pt-3 border-t border-gray-100 dark:border-gray-800"
     >
-      <div class="text-sm text-gray-500">
+      <div class="text-sm text-gray-500 dark:text-gray-400">
         <span>{{ meal().total_days }} días de plan</span>
       </div>
 
@@ -79,7 +79,7 @@
       </button>
       } @else {
       <button
-        class="bg-gray-200 text-gray-500 px-4 py-2 rounded-lg font-medium cursor-not-allowed"
+        class="bg-gray-200 dark:bg-gray-800 text-gray-500 dark:text-gray-400 px-4 py-2 rounded-lg font-medium cursor-not-allowed"
         disabled
       >
         <i class="pi pi-check text-sm"></i>
