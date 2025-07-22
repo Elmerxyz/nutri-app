@@ -1,12 +1,12 @@
 export interface Meal {
   id: string;
   name: string;
-  thumbnail_url: string;
-  suitable_for: MedicalCondition[];
-  meal_types: MealType[];
+  thumbnailUrl: string;
+  suitableFor: MedicalCondition[];
+  mealTypes: MealType[];
   day: number;
-  total_days: number;
-  add_to_meal_plan_enabled: boolean;
+  totalDays: number;
+  addToMealPlanEnabled: boolean;
 }
 
 export type MealType = 'breakfast' | 'lunch' | 'dinner' | 'side';

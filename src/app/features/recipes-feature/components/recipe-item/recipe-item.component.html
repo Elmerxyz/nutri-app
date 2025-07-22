@@ -4,7 +4,7 @@
   <!-- Header con imagen y botón favorito -->
   <div class="relative">
     <img
-      [src]="meal().thumbnail_url"
+      [src]="meal().thumbnailUrl"
       [alt]="meal().name"
       class="w-full h-48 object-cover"
     />
@@ -12,7 +12,9 @@
       <button
         class="bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm rounded-full p-2 hover:bg-white dark:hover:bg-gray-700 transition-all"
       >
-        <i class="pi pi-heart text-primary-500 dark:text-primary-400 hover:text-primary-600"></i>
+        <i
+          class="pi pi-heart text-primary-500 dark:text-primary-400 hover:text-primary-600"
+        ></i>
       </button>
     </div>
     <!-- Badge del día -->
@@ -20,7 +22,7 @@
       <span
         class="bg-primary-500 text-white px-3 py-1 rounded-full text-sm font-medium"
       >
-        Día {{ meal().day }}
+        Día {{ meal().day }} / {{ meal().totalDays }}
       </span>
     </div>
   </div>
@@ -28,15 +30,19 @@
   <!-- Contenido principal -->
   <div class="p-4">
     <!-- Título -->
-    <h3 class="font-bold text-md text-gray-800 dark:text-gray-100 pb-3 line-clamp-2">
+    <h3
+      class="font-bold text-md text-gray-800 dark:text-gray-100 pb-3 line-clamp-2"
+    >
       {{ meal().name }}
     </h3>
 
     <!-- Tags de condiciones médicas -->
     <div class="pb-3">
-      <p class="text-sm text-gray-600 dark:text-gray-300 pb-2 font-medium">Ideal para:</p>
+      <p class="text-sm text-gray-600 dark:text-gray-300 pb-2 font-medium">
+        Ideal para:
+      </p>
       <div class="flex flex-wrap gap-2">
-        @for (condition of meal().suitable_for; track $index) {
+        @for (condition of meal().suitableFor; track $index) {
         <p-tag
           [value]="condition"
           styleClass="bg-primary-100 dark:bg-primary-900 text-primary-800 dark:text-primary-200 border-primary-200 dark:border-primary-800"
@@ -49,9 +55,11 @@
 
     <!-- Tags de tipos de comida -->
     <div class="pb-4">
-      <p class="text-sm text-gray-600 dark:text-gray-300 pb-2 font-medium">Tipo de comida:</p>
+      <p class="text-sm text-gray-600 dark:text-gray-300 pb-2 font-medium">
+        Tipo de comida:
+      </p>
       <div class="flex flex-wrap gap-2">
-        @for (mealType of meal().meal_types; track $index) {
+        @for (mealType of meal().mealTypes; track $index) {
         <p-tag
           [value]="mealType"
           styleClass="bg-primary-50 dark:bg-primary-950 text-primary-700 dark:text-primary-200 border-primary-300 dark:border-primary-800"
@@ -62,30 +70,23 @@
       </div>
     </div>
 
-    <!-- Footer con botón de acción -->
     <div
-      class="flex items-center justify-between pt-3 border-t border-gray-100 dark:border-gray-800"
+      class="flex items-center justify-between pt-3 gap-2 border-t border-gray-100 dark:border-gray-800"
     >
-      <div class="text-sm text-gray-500 dark:text-gray-400">
-        <span>{{ meal().total_days }} días de plan</span>
-      </div>
-
-      @if (meal().add_to_meal_plan_enabled) {
-      <button
-        class="bg-primary-500 hover:bg-primary-600 text-white px-4 py-2 rounded-lg font-medium transition-colors flex items-center gap-2"
-      >
-        <i class="pi pi-plus text-sm"></i>
-        Agregar
-      </button>
-      } @else {
-      <button
-        class="bg-gray-200 dark:bg-gray-800 text-gray-500 dark:text-gray-400 px-4 py-2 rounded-lg font-medium cursor-not-allowed"
-        disabled
-      >
-        <i class="pi pi-check text-sm"></i>
-        Agregado
-      </button>
-      }
+      <app-button
+        text="Ver receta"
+        icon="pi pi-eye"
+        moreClasses="py-2"
+        textColor="text-sm text-white"
+        bgColor="bg-primary-500"
+      />
+      <app-button
+        text="Agregar"
+        icon="pi pi-cart-plus"
+        moreClasses="py-2 border-2 border-primary-500 dark:border-primary-400"
+        textColor=" text-sm text-primary-600 dark:text-white"
+        bgColor="bg-white"
+      />
     </div>
   </div>
 </div>

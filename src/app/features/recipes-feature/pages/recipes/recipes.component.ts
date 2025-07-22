@@ -1,53 +1,80 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import {
   MealPlan,
   Meal,
   MedicalCondition,
   MealType,
 } from '../../interfaces/recipe.interface';
-import { data } from '../../../../core/services/data.service';
 import { RecipeItemComponent } from '../../components/recipe-item/recipe-item.component';
 import { FormsModule } from '@angular/forms';
-import { SelectButton } from 'primeng/selectbutton'; 
-import { InputFormComponent } from "../../../../shared/components/forms/input-form/input-form.component";
+import { SelectButton } from 'primeng/selectbutton';
+import { InputFormComponent } from '../../../../shared/components/forms/input-form/input-form.component';
 import { PaginatorModule } from 'primeng/paginator';
-import { ButtonComponent } from "../../../../shared/components/ui/button/button.component";
+import { ButtonComponent } from '../../../../shared/components/ui/button/button.component';
+import { RecipesServicesService } from '../../../../core/services/recipes-services/recipes-services.service';
+import { finalize } from 'rxjs';
 interface FilterOption {
   label: string;
   value: string;
 }
+
+interface ApiResponse {
+  status: string;
+  message: string;
+  data: {
+    recipes: Meal[];
+    nextPageToken: string | null;
+    totalCount: number;
+    limit: number;
+  };
+}
+
 @Component({
   selector: 'app-recipes',
-  imports: [RecipeItemComponent, SelectButton, FormsModule, InputFormComponent, PaginatorModule, ButtonComponent],
+  imports: [
+    RecipeItemComponent,
+    SelectButton,
+    FormsModule,
+    InputFormComponent,
+    PaginatorModule,
+    ButtonComponent,
+  ],
   templateUrl: './recipes.component.html',
   styleUrl: './recipes.component.scss',
 })
 export class RecipesComponent {
- mealPlan: MealPlan = {
-    meals: data,
-  };
+  private readonly _recipesServices = inject(RecipesServicesService);
 
-  filteredMeals: Meal[] = [...data];
+  // Estado de carga
+  loading: boolean = false;
+
+  // Datos de recetas
+  recipes: Meal[] = [];
+  filteredMeals: Meal[] = [];
   paginatedMeals: Meal[] = [];
-  
+  nextPageToken: string | null = null;
+  totalRecipes: number = 0;
+
   // Paginación
   currentPage: number = 0;
   itemsPerPage: number = 12;
-  
+
   // Búsqueda
   searchQuery: string = '';
 
   // Opciones para filtros
   medicalConditionOptions: FilterOption[] = [
     { label: 'Todos', value: 'all' },
-    { label: 'Gastritis', value: 'gastritis' },   
+    { label: 'Gastritis', value: 'gastritis' },
+    { label: 'Anemia', value: 'anemia' },
+    { label: 'Alto en proteína', value: 'alto en proteína' },
   ];
 
   mealTypeOptions: FilterOption[] = [
     { label: 'Todos', value: 'all' },
     { label: 'Desayuno', value: 'breakfast' },
     { label: 'Almuerzo', value: 'lunch' },
-    { label: 'Cena', value: 'dinner' }, 
+    { label: 'Cena', value: 'dinner' },
   ];
 
   // Valores seleccionados
@@ -57,22 +84,54 @@ export class RecipesComponent {
   // Math para el template
   Math = Math;
 
-  constructor() {
-    this.updatePagination();
+  constructor() {}
+
+  ngOnInit() {
+    // Cargar recetas al iniciar el componente
+    this.loadRecipes();
+  }
+
+  loadRecipes(nextPageToken?: string, pageSize: number = 10): void {
+    this.loading = true;
+
+    this._recipesServices
+      .getRecipes(nextPageToken, pageSize)
+      .pipe(finalize(() => (this.loading = false)))
+      .subscribe({
+        next: (response: ApiResponse) => {
+          // Extraer datos de la respuesta API
+          const { recipes, nextPageToken: token, totalCount } = response.data;
+
+          if (nextPageToken) {
+            // Agregar más recetas a la lista existente (paginación)
+            this.recipes = [...this.recipes, ...recipes];
+          } else {
+            // Primera carga o actualización completa
+            this.recipes = recipes;
+          }
+
+          this.nextPageToken = token;
+          this.totalRecipes = totalCount;
+
+          // Aplicar filtros actuales
+          this.filterRecipes();
+        },
+        error: (error) => {},
+      });
   }
 
   // Método para filtrar recetas
   filterRecipes(): void {
-    this.filteredMeals = data.filter((meal) => {
+    this.filteredMeals = this.recipes.filter((meal) => {
       const conditionMatch =
         this.selectedCondition === 'all' ||
-        meal.suitable_for.includes(this.selectedCondition as MedicalCondition);
+        meal.suitableFor.includes(this.selectedCondition as MedicalCondition);
 
       const mealTypeMatch =
         this.selectedMealType === 'all' ||
-        meal.meal_types.includes(this.selectedMealType as MealType);
+        meal.mealTypes.includes(this.selectedMealType as MealType);
 
-      const searchMatch = 
+      const searchMatch =
         this.searchQuery === '' ||
         meal.name.toLowerCase().includes(this.searchQuery.toLowerCase());
 
@@ -88,6 +147,18 @@ export class RecipesComponent {
     const startIndex = this.currentPage * this.itemsPerPage;
     const endIndex = startIndex + this.itemsPerPage;
     this.paginatedMeals = this.filteredMeals.slice(startIndex, endIndex);
+
+    // Cargar más datos si estamos cerca del final y hay más datos disponibles
+    if (endIndex >= this.recipes.length - 5 && this.nextPageToken) {
+      this.loadMoreRecipes();
+    }
+  }
+
+  // Cargar más recetas cuando se necesite
+  loadMoreRecipes(): void {
+    if (this.nextPageToken && !this.loading) {
+      this.loadRecipes(this.nextPageToken);
+    }
   }
 
   // Manejar cambio de página
@@ -127,5 +198,10 @@ export class RecipesComponent {
     this.selectedMealType = 'all';
     this.searchQuery = '';
     this.filterRecipes();
+  }
+
+  // Para la plantilla
+  get mealPlan(): MealPlan {
+    return { meals: this.paginatedMeals };
   }
 }
