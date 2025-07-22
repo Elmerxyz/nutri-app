@@ -1,107 +1,90 @@
-import { inject, Injectable, signal } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { Router } from '@angular/router';
+import {
+  Auth,
+  signOut,
+  onAuthStateChanged,
+  GoogleAuthProvider,
+  signInWithPopup,
+} from '@angular/fire/auth';
+import {
+  BehaviorSubject,
+  catchError,
+  filter,
+  from,
+  Observable,
+  of,
+  switchMap,
+  take,
+} from 'rxjs';
+import { FirebaseError } from 'firebase/app';
 import { HttpClient } from '@angular/common/http';
-import { catchError, Observable, of, tap } from 'rxjs';
-import { environmentDev } from '../../../environments/environment.development';
-import { UserAccessing } from '../../../shared/interfaces/user';
-import { AuthState } from '../../interfaces/api/auth';
-import { LocalstorageService } from '../localstorage-services/localstorage.service';
+import { AuthCredentials, ResutlLogin, User } from './auth.interface';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
+  private readonly _auth = inject(Auth);
   private readonly _router = inject(Router);
-  private readonly _http = inject(HttpClient);
-  private readonly _localStorageService = inject(LocalstorageService);
-  private readonly _apiUrl = `${environmentDev.apiUrl}auth/`;
-  private readonly _authState = signal<AuthState>({
-    isAuthenticated: false,
-    user: null,
-    currentBranch: null,
-  });
-  readonly authState = this._authState.asReadonly();
+  private readonly currentUser = new BehaviorSubject<any>(null);
+  private readonly authReady = new BehaviorSubject(false);
 
-  constructor() {
-    this.initAuthState();
+  private get isClient(): boolean {
+    return typeof window !== 'undefined';
   }
 
-  private initAuthState(): void {
-    const user = this._localStorageService.getUserAuthorized();
-    const currentBranch = this._localStorageService.getBranchId();
-    const isAuthenticated = this._localStorageService.getIsAuthenticated();
-    if (isAuthenticated && user) {
-      this._authState.set({
-        isAuthenticated,
-        user,
-        currentBranch: 'name',
+  constructor() {
+    if (this.isClient) {
+      onAuthStateChanged(this._auth, async (user) => {
+        this.currentUser.next(user);
+        this.authReady.next(true);
+        if (user) {
+          localStorage.setItem('user', JSON.stringify(user));
+        } else {
+          localStorage.removeItem('user');
+        }
       });
     }
   }
 
-  get isAuthenticated(): boolean {
-    return this._authState().isAuthenticated;
+  public session(): Observable<any> {
+    if (this.isClient) {
+      const user = localStorage.getItem('user');
+      return of(user ? JSON.parse(user) : null);
+    }
+    return of(null);
   }
 
-  signIn(credentials: UserAccessing): Observable<any> {
-    return this._http
-      .post<any>(`${this._apiUrl}signin`, credentials, {
-        withCredentials: true,
-        observe: 'response',
+  public async signOut() {
+    try {
+      await signOut(this._auth);
+      localStorage.removeItem('user');
+      this.currentUser.next(null);
+      await this._router.navigate(['/auth/log-in']);
+    } catch (error) {
+      console.error('Error en logout:', error);
+      throw error;
+    }
+  }
+
+  public getCurrentUser(): Observable<any> {
+    return this.currentUser.asObservable();
+  }
+
+  public signInWithGoogle() {
+    const provider = new GoogleAuthProvider();
+    return from(signInWithPopup(this._auth, provider)).pipe(
+      switchMap((result) => {
+        const user = result.user;
+        this.currentUser.next(user);
+        localStorage.setItem('user', JSON.stringify(user));
+        return of(user);
+      }),
+      catchError((error) => {
+        console.error('Error al iniciar sesión con Google:', error);
+        return of(null);
       })
-      .pipe(
-        tap((response) => {
-          if (response.status === 200) {
-            this._authState.set({
-              isAuthenticated: true,
-              user: response.body.data,
-              currentBranch: null,
-            });
-
-            // Guardar información en almacenamiento
-            localStorage.setItem(
-              environmentDev.authStateKey,
-              environmentDev.authStateValue
-            );
-            if (
-              response.body.data !== null ||
-              response.body.data !== undefined
-            ) {
-              localStorage.setItem('user', JSON.stringify(response.body.data));
-            }
-            if (
-              this.authState().user?.role.roleName.toLocaleLowerCase() ===
-                'seller' ||
-              'vendedor'
-            ) {
-              this._router.navigate(['/luxury/sales']);
-            } else {
-              this._router.navigate(['/luxury/home']);
-            }
-            return { success: true, message: response.body.message };
-          } else {
-            return { success: false, message: response.body.message };
-          }
-        }),
-        catchError(() => {
-          return of({ success: false, message: 'Error en la autenticación' });
-        })
-      );
-  }
-
-  signOut(): Observable<any> {
-    const logout = this._http.get<any>(`${this._apiUrl}signout`, {
-      withCredentials: true,
-    });
-
-    this._authState.set({
-      isAuthenticated: false,
-      user: null,
-      currentBranch: null,
-    });
-    localStorage.clear();
-    this._router.navigate(['/auth']);
-
-    return logout;
+    );
   }
 }

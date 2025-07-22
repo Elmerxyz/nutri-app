@@ -19,6 +19,7 @@ import { pdfConfig } from './config/pdf.config';
 import { getStorage, provideStorage } from '@angular/fire/storage';
 import { CloudStorageService } from './core/services/cloud-storage/cloud-storage.service';
 import { ThemeService } from './core/ui-services/theme.service';
+import { getAuth, provideAuth } from '@angular/fire/auth';
 export const appConfig: ApplicationConfig = {
   providers: [
     provideRouter(routes),
@@ -39,6 +40,10 @@ export const appConfig: ApplicationConfig = {
     providePdfConfig(pdfConfig),
     provideFirebaseApp(() => initializeApp(firebaseConfig)),
     provideStorage(() => getStorage()),
+      provideAuth(() => {
+      const auth = getAuth();
+      return auth;
+    }),
     FormatDatePipe,
     TruncateDecimalPipe,
     LocalstorageService,

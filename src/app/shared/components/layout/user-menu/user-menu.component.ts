@@ -2,8 +2,8 @@ import { Component, inject, input } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
 import { NgClass } from '@angular/common';
 import { SidebarButtonComponent } from '../../ui/sidebar-button/sidebar-button.component';
-import { AuthService } from '../../../../core/services/auth-services/auth.service';
 import { ThemeService } from '../../../../core/ui-services/theme.service';
+import { AuthService } from '../../../../core/services/auth-services/auth.service';
 
 @Component({
   selector: 'app-user-menu',
@@ -14,16 +14,13 @@ import { ThemeService } from '../../../../core/ui-services/theme.service';
 export class UserMenuComponent {
   readonly textHidden = input<boolean>(false);
   private readonly _themeService = inject(ThemeService);
+  private readonly _authService = inject(AuthService);
 
   confirm: boolean = false;
-  constructor(private authService: AuthService) {}
-  logOut() {
-    this.authService.signOut().subscribe({
-      next: (res: any) => {
-        this.confirm = true;
-      },
-    });
+  async logOut() {
+    await this._authService.signOut();
   }
+
   darkMode() {
     this._themeService.toggleTheme();
   }

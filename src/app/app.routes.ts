@@ -1,12 +1,8 @@
 import { Routes } from '@angular/router';
-import { LoginComponent } from './features/auth-feature/login/login.component';
+import { LogInComponent } from './features/auth-feature/login/login.component';
 import { MainComponent } from './main/main.component';
-import { HomeComponent } from './features/dashboard-feature/home/home.component';
 
-import { PasswordRecoveryComponent } from './features/auth-feature/password-recovery/password-recovery.component';
-import {
-  publicGuard,
-} from './core/guards/auth.guard';
+import { AuthGuard, AuthGuardUserName } from './core/guards/auth.guard';
 import { ContactsComponent } from './features/contacts-feature/contacts/contacts.component';
 import { MyRecipesComponent } from './features/recipes-feature/pages/my-recipes/my-recipes.component';
 import { RecomendationsComponent } from './features/recomendatios-feature/recomendations/recomendations.component';
@@ -16,20 +12,20 @@ export const routes: Routes = [
   { path: '', redirectTo: 'auth/login', pathMatch: 'full' },
   {
     path: 'auth',
-    canActivate: [publicGuard],
+    canActivate: [AuthGuard],
     children: [
-      { path: '', redirectTo: 'login', pathMatch: 'full' },
-      { path: 'login', component: LoginComponent },
-      { path: 'recovery-password', component: PasswordRecoveryComponent },
+      { path: '', redirectTo: 'log-in', pathMatch: 'full' },
+      { path: 'log-in', component: LogInComponent },
     ],
   },
   {
     path: 'nutri',
-    component: MainComponent,
+    component: MainComponent, 
     children: [
+      { path: '', redirectTo: 'recipes', pathMatch: 'full' },
       {
         path: 'recipes',
-        component:RecipesComponent,
+        component: RecipesComponent,
         // canActivate: [authGuardAdmin],
       },
 
@@ -40,13 +36,12 @@ export const routes: Routes = [
       },
       {
         path: 'my-recipes',
-        component:MyRecipesComponent
+        component: MyRecipesComponent,
       },
       {
         path: 'recomendations',
-        component:RecomendationsComponent
-      }
-
+        component: RecomendationsComponent,
+      },
     ],
   },
 ];

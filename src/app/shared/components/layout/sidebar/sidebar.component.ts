@@ -4,8 +4,7 @@ import { NgClass } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { MENU_OPTIONS, MenuNode } from '../../../config/menu_options';
 import { TooltipModule } from 'primeng/tooltip';
-import { SidebarButtonComponent } from '../../ui/sidebar-button/sidebar-button.component';
-import { VerifiedRolesService } from '../../../../core/services/auth-services/verified-roles.service';
+import { SidebarButtonComponent } from '../../ui/sidebar-button/sidebar-button.component'; 
 @Component({
   selector: 'app-sidebar',
   standalone: true,

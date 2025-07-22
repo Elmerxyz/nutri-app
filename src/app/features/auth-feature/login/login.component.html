@@ -1,127 +1,32 @@
-<main
-  [ngClass]="{ fixed: confirmLogin }"
-  class="grid grid-cols-1 lg:grid-cols-2 min-h-screen w-full h-full p-4 lg:py-10 lg:px-20"
->
-  <form
-    [formGroup]="form"
-    class="flex flex-col col-span-1 py-8 px-6 md:px-10 lg:px-20 rounded-2xl border-2 border-primary-l-100 shadow-lg h-full lg:rounded-r-none lg:border-r-0"
-  >
-    <div class="flex-1">
-      <div class="flex flex-col mb-6">
-        <h2 class="text-2xl font-bold mt-2 text-primary-500">
-          Bienvenido a nuestra plataforma
-        </h2>
-
-        <span class="text-gray-600">
-          Por favor, ingrese sus credenciales para continuar.
-        </span>
-      </div>
-      <div class="py-2">
-        <img
-          class="rounded-lg max-h-60 w-full object-cover lg:hidden"
-          src="./images/portada.svg"
-          alt=""
-        />
-      </div>
-      <div class="flex flex-col gap-4">
-        <!-- ID Usuario -->
-        <div class="font-semibold">
-          <label> ID Usuario </label>
-          <div
-            [ngClass]="{
-              'border-danger-100':
-                form.controls['userId'].invalid &&
-                form.controls['userId'].touched
-            }"
-            class="mt-2 flex border-2 text-lg rounded-lg px-4 font-normal gap-2 items-center focus-within:border-blue-400 focus-within:outline outline-blue-200"
-          >
-            <i class="pi pi-user text-sm text-gray-400"></i>
-            <input
-              type="text"
-              formControlName="userId"
-              maxlength="8"
-              required
-              class="h-full bg-transparent w-full border-none outline-none py-3"
-              placeholder="ID de usuario"
-            />
-          </div>
-          @if (form.controls['userId'].invalid &&
-          form.controls['userId'].touched) {
-          <div class="text-red-500 mt-2 text-sm">
-            ID de usuario debe ser un número de 8 dígitos.
-          </div>
-          }
-        </div>
-
-        <!-- Contraseña -->
-        <div class="font-semibold">
-          <label> Contraseña </label>
-          <div
-            [ngClass]="{
-              'border-danger-100':
-                form.controls['password'].invalid &&
-                form.controls['password'].touched
-            }"
-            class="mt-2 flex border-2 text-lg rounded-lg px-4 font-normal gap-2 items-center focus-within:border-blue-400 focus-within:outline outline-blue-200"
-          >
-            <i class="pi pi-lock text-sm text-gray-400"></i>
-            <input
-              formControlName="password"
-              required
-              class="h-full bg-transparent w-full py-3 border-none outline-none"
-              placeholder="Contraseña"
-              [type]="passwordVisible ? 'text' : 'password'"
-            />
-            <div class="icon cursor-pointer" (click)="showPassword()">
-              <i
-                class="pi {{
-                  passwordVisible ? 'pi-eye' : 'pi-eye-slash'
-                }} text-lg text-gray-400"
-              ></i>
-            </div>
-          </div>
-          @if (form.controls['password'].invalid &&
-          form.controls['password'].touched) {
-          <div class="text-red-500 mt-2 text-sm">
-            La contraseña debe tener al menos 8 caracteres.
-          </div>
-          }
-          <div class="flex items-center justify-end py-2">
-            <p
-              [routerLink]="'../recovery-password'"
-              class="text-end text-primary-500 mt-2 cursor-pointer mb-2"
-            >
-              ¿Olvidaste tu contraseña?
-            </p>
-          </div>
-        </div>
-      </div>
+<div class="min-h-screen flex items-center justify-center bg-gradient-to-br from-primary-50 to-primary-100 px-4 sm:px-6 lg:px-8">
+  <div class="w-full max-w-md space-y-8 p-8 bg-white/90 backdrop-blur-sm rounded-2xl shadow-xl border border-primary-100">
+    <!-- Header -->
+    <div class="text-center space-y-4">
+      <i class="pi pi-whatsapp text-5xl text-primary-500"></i>
+      <h2 class="text-3xl font-bold tracking-tight text-gray-900">
+        ¡Bienvenido!
+      </h2>
+      <p class="text-sm text-gray-600">
+        Inicia sesión para acceder.
+      </p>
     </div>
 
-    <!-- Botón con más espacio superior -->
-    <div class="mt-10">
-      <app-button
-        (click)="login()"
-        [bgColor]="'bg-primary-l-500'"
-        [text]="loading ? 'Iniciando sesión...' : 'Iniciar Sesión'"
-        [moreClasses]="
-          'text-lg hover:bg-opacity-90 duration-300 ease-in-out py-3 w-full flex items-center justify-center gap-4'
-        "
-        [disabled]="form.invalid || loading"
+    <!-- Botón de inicio de sesión con Google -->
+    <div class="pt-2">
+      <button
+        class="w-full flex items-center justify-center gap-3 py-3 px-4 rounded-xl bg-primary-500 hover:bg-primary-600 text-white font-semibold shadow transition-colors"
+        (click)="logInWithGoogle()"
+        type="button"
       >
-        @if (loading) {
-        <i class="pi pi-spin pi-spinner text-[1.8rem]"></i>
-        }
-      </app-button>
+        <img src="https://www.svgrepo.com/show/475656/google-color.svg" alt="Google" class="w-6 h-6" />
+        Iniciar sesión con Google
+      </button>
     </div>
-  </form>
-
-  <!-- Imagen lateral -->
-  <div class="w-auto col-span-1 hidden lg:block h-full">
-    <img
-      class="h-full object-cover border-l-0 border-4 border-primary-l-100 rounded-2xl rounded-l-none"
-      src="./images/portada.svg"
-      alt="Imagen de bienvenida"
-    />
+    
+    <!-- Footer -->
+    <div class="mt-4 text-center text-sm text-gray-600">
+      <!-- <p>¿Necesitas ayuda? Contacta al administrador</p> -->
+    </div>
   </div>
-</main>
+</div>
+<p-toast [life]="4000" />

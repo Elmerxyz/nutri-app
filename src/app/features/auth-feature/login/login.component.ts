@@ -1,84 +1,52 @@
-import { Router, RouterLink } from '@angular/router';
+import { Component, inject } from '@angular/core';
 import {
   FormBuilder,
   FormsModule,
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
-import { NgClass } from '@angular/common';
-import { Component, inject } from '@angular/core';
-import { ButtonComponent } from '../../../shared/components/ui/button/button.component';
-import { UserAccessing } from '../../../shared/interfaces/user';
+import { Router } from '@angular/router';
+import { MessageService } from 'primeng/api';
+import { Toast } from 'primeng/toast';
+import { toSignal } from '@angular/core/rxjs-interop';
+import { LogInForm } from '../../../core/services/auth-services/auth.interface';
+import { ToastSeverity } from '../../../shared/enums/toast-severity.enum';
 import { AuthService } from '../../../core/services/auth-services/auth.service';
-
 @Component({
-  selector: 'app-login',
-  standalone: true,
-  imports: [
-    ButtonComponent,
-    RouterLink,
-    FormsModule,
-    NgClass,
-    ReactiveFormsModule,
-  ],
+  selector: 'app-log-in',
+  imports: [FormsModule, ReactiveFormsModule, Toast],
   templateUrl: './login.component.html',
   styleUrl: './login.component.scss',
 })
-export class LoginComponent {
+export class LogInComponent {
   private readonly _formBuilder = inject(FormBuilder);
   private readonly _authService = inject(AuthService);
   private readonly _router = inject(Router);
-  passwordVisible: boolean = false;
-  loading: boolean = false;
-  confirmLogin: boolean = false;
+  private readonly _messageService = inject(MessageService);
 
-  messageLogin: any = {
-    title: '',
-    message: '',
-    type: '',
-  };
-
-  form = this._formBuilder.group({
-    userId: [
-      '',
-      [
-        Validators.minLength(8),
-        Validators.maxLength(8),
-        Validators.pattern('^[0-9]*$'),
-        Validators.required,
-      ],
-    ],
-    password: ['', [Validators.required]],
+  userAuthorized = toSignal<any>(this._authService.session(), {
+    initialValue: null,
   });
 
-  showPassword() {
-    this.passwordVisible = !this.passwordVisible;
+  logInWithGoogle(){
+    this._authService.signInWithGoogle().subscribe({
+      next: (user) => {
+        if (user) {
+          this._router.navigate(['/nutri']);
+        }
+      },
+      error: (error) => {
+        console.error('Error al iniciar sesión con Google:', error);
+        this.showToast(ToastSeverity.ERROR, 'Error', 'No se pudo iniciar sesión con Google');
+      }
+    });
   }
 
-  async login() {
-    if (this.form.valid) {
-      this.loading = true;
-
-      const user: UserAccessing = {
-        userId: this.form.value.userId as string,
-        password: this.form.value.password as string,
-      };
-
-      this._authService.signIn(user).subscribe({
-        next: (response) => {
-          this.loading = false;
-        },
-        error: (error) => {
-          this.loading = false;
-          this.messageLogin = {
-            title: 'Error',
-            message: 'Usuario o contraseña incorrectos',
-            type: 'error',
-          };
-        },
-      });
-
-      this.confirmLogin = true;
-    }
+  showToast(severity: ToastSeverity, summary: string, detail: string) {
+    this._messageService.add({
+      severity,
+      summary,
+      detail,
+    });
   }
 }
