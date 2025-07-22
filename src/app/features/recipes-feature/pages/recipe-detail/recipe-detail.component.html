@@ -1,1 +1,201 @@
-<p>recipe-detail works!</p>
+<div class="min-h-screen dark:bg-gray-900 p-4">
+  <!-- Loading Indicator -->
+  @if (loading()) {
+  <div class="flex justify-center items-center h-64">
+    <div
+      class="animate-spin rounded-full h-16 w-16 border-t-2 border-b-2 border-primary-500"
+    ></div>
+  </div>
+  }
+
+  <!-- Error Message -->
+  @if (error()) {
+  <div
+    class="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg p-4 max-w-4xl mx-auto"
+  >
+    <div class="flex">
+      <div class="flex-shrink-0">
+        <i class="pi pi-exclamation-triangle text-red-500 text-xl"></i>
+      </div>
+      <div class="ml-3">
+        <h3 class="text-sm font-medium text-red-800 dark:text-red-200">
+          Error
+        </h3>
+        <div class="pt-2 text-sm text-red-700 dark:text-red-300">
+          <p>{{ error() }}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+  }
+  <div class="pb-6">
+    <a
+      routerLink="/nutri/recipes"
+      class="inline-flex items-center cursor-pointer text-primary-600 dark:text-primary-400 hover:text-primary-800 dark:hover:text-primary-300 transition-colors"
+    >
+      <i class="pi pi-arrow-left pr-2"></i>
+      Volver a recetas
+    </a>
+  </div>
+
+  <!-- Recipe Content -->
+  @if (recipe() && !loading() && !error()) {
+  <div class="grid lg:grid-cols-6">
+    <!-- Recipe Header -->
+    <div
+      class="col-span-5 bg-white dark:bg-gray-800 rounded-2xl overflow-hidden pb-8"
+    >
+      <div class="relative h-72 sm:h-96">
+        <img
+          [src]="recipe().thumbnailUrl"
+          [alt]="recipe().name"
+          class="w-full h-full object-cover"
+        />
+        <div
+          class="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent"
+        ></div>
+        <div class="absolute bottom-0 left-0 p-6">
+          <h1
+            class="text-3xl sm:text-4xl font-bold text-white pb-4 drop-shadow-md"
+          >
+            {{ recipe().name }}
+          </h1>
+          <div class="flex flex-wrap gap-2">
+            @for (mealType of recipe().mealTypes; track $index) {
+            <span
+              class="bg-primary-500 text-white text-xs px-3 py-1 rounded-full shadow-sm"
+            >
+              {{ mealType }}
+            </span>
+            } @for (condition of recipe().suitableFor; track $index) {
+            <span
+              class="bg-green-500 text-white text-xs px-3 py-1 rounded-full shadow-sm"
+            >
+              {{ condition }}
+            </span>
+            }
+          </div>
+        </div>
+      </div>
+
+      <!-- Day Info -->
+      <div
+        class="p-6 bg-gray-50 dark:bg-gray-900 border-t border-gray-100 dark:border-gray-700 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4"
+      >
+        <div class="flex items-center gap-2">
+          <i class="pi pi-calendar text-primary-500"></i>
+          <span class="text-sm text-gray-600 dark:text-gray-300"
+            >Día {{ recipe().day }} de {{ recipe().totalDays }}</span
+          >
+        </div>
+
+        <button
+          class="bg-primary-500 hover:bg-primary-600 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors flex items-center gap-2 shadow-sm w-full sm:w-auto justify-center"
+          [disabled]="!recipe().addToMealPlanEnabled"
+          [class.opacity-50]="!recipe().addToMealPlanEnabled"
+        >
+          <i class="pi pi-plus"></i>
+          Agregar a mi plan
+        </button>
+      </div>
+    </div>
+    <!-- Ingredients -->
+    <div class="lg:col-span-1">
+      <div class="bg-white dark:bg-gray-800 rounded-2xl p-6 sticky top-4">
+        <h2
+          class="text-xl font-bold text-gray-900 dark:text-white pb-6 flex items-center"
+        >
+          <i class="pi pi-list text-primary-500 pr-2"></i>
+          Ingredientes
+        </h2>
+        <ul class="flex flex-col gap-4">
+          @for (ingredient of recipe().ingredients; track ingredient.name) {
+          <li class="flex items-start gap-1 group">
+            <span
+              class="inline-flex items-center justify-center h-6 w-6 rounded-full bg-primary-100 dark:bg-primary-900/30 text-primary-600 dark:text-primary-400 text-sm mr-3 flex-shrink-0 group-hover:bg-primary-200 dark:group-hover:bg-primary-800/50 transition-colors"
+            >
+              <i class="pi pi-check"></i>
+            </span>
+            <span class="text-gray-700 dark:text-gray-300">
+              <span class="font-medium"
+                >{{ ingredient.quantity }} {{ ingredient.unit }}</span
+              >
+              {{ ingredient.name }}
+            </span>
+          </li>
+          }
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="grid lg:grid-cols-6 gap-4">
+    <!-- Preparation Steps -->
+    <div class="lg:col-span-3">
+      <div class="border dark:bg-gray-800 rounded-2xl p-6">
+        <h2
+          class="text-xl font-bold text-gray-900 dark:text-white pb-6 flex items-center"
+        >
+          <i class="pi pi-book text-primary-500 pr-2"></i>
+          Preparación
+        </h2>
+        <div class="space-y-8">
+          @for (step of recipe().preparationSteps; track step.order) {
+          <div
+            class="flex flex-col sm:flex-row gap-4 sm:gap-6 border-b border-gray-100 dark:border-gray-700 pb-8 hover:bg-gray-50 dark:hover:bg-gray-800/80 p-2 rounded-lg transition-colors"
+          >
+            <div class="flex-shrink-0">
+              <div
+                class="flex items-center justify-center h-12 w-12 rounded-full bg-primary-500 text-white font-bold text-lg shadow-md"
+              >
+                {{ step.order }}
+              </div>
+            </div>
+            <div class="flex-1 space-y-4">
+              <p class="text-gray-800 dark:text-gray-200 text-lg">
+                {{ step.instruction }}
+              </p>
+              @if (step.imageUrl) {
+              <img
+                [src]="step.imageUrl"
+                alt="Paso {{ step.order }}"
+                class="w-full h-56 object-cover rounded-lg shadow-md hover:opacity-95 transition-opacity cursor-pointer"
+              />
+              }
+            </div>
+          </div>
+          }
+        </div>
+      </div>
+    </div>
+    <!-- Reference Images -->
+    <div class="col-span-1 lg:col-span-3">
+      @if (recipe().referenceImagesUrls && recipe().referenceImagesUrls.length >
+      0) {
+      <div class="pt-8 border dark:bg-gray-800 rounded-2xl p-6 mt-8">
+        <h2
+          class="text-xl font-bold text-gray-900 dark:text-white pb-6 flex items-center"
+        >
+          <i class="pi pi-images text-primary-500 pr-2"></i>
+          Imágenes de referencia
+        </h2>
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-4">
+          @for (img of recipe().referenceImagesUrls; track $index) {
+          <div
+            class="aspect-w-16 aspect-h-9 overflow-hidden rounded-lg shadow-md transform transition-transform hover:scale-[1.02] duration-300"
+          >
+            <img
+              [src]="img"
+              alt="Referencia {{ $index + 1 }}"
+              class="object-cover w-full h-full hover:opacity-90 transition-opacity cursor-pointer"
+            />
+          </div>
+          }
+        </div>
+      </div>
+      }
+    </div>
+  </div>
+
+  }
+</div>

@@ -11,17 +11,21 @@ export class RecipesServicesService {
   private readonly _httpclient = inject(HttpClient);
   constructor() {}
 
-   getRecipes(nextPageToken?: string, pageSize?: number): Observable<any> {
+  getRecipes(nextPageToken?: string, pageSize?: number): Observable<any> {
     let params = new HttpParams();
-    
+
     if (nextPageToken) {
       params = params.set('startAfterId', nextPageToken);
     }
-    
+
     if (pageSize) {
       params = params.set('pageSize', pageSize.toString());
     }
-    
+
     return this._httpclient.get(`${this._apiUrl}recipes`, { params });
+  }
+
+  getRecipeById(id: string): Observable<any> {
+    return this._httpclient.get(`${this._apiUrl}recipes/${id}`);
   }
 }
