@@ -8,11 +8,7 @@ import {
 import { RouterLink } from '@angular/router';
 import { UserMenuComponent } from '../user-menu/user-menu.component';
 import { UserAuthorized } from '../../../interfaces/user';
-import { LocalstorageService } from '../../../../core/services/localstorage-services/localstorage.service';
-import { Option } from '../../forms/select/select.component';
-import { toSignal } from '@angular/core/rxjs-interop';
-import { map } from 'rxjs';
-
+import { LocalstorageService } from '../../../../core/services/localstorage-services/localstorage.service'; 
 @Component({
   selector: 'app-header',
   standalone: true,

@@ -19,6 +19,7 @@ export interface UserAuthorized {
   firstLastname: string;
   secondLastname: string;
   userId: string;
+  displayName: string;
 }
 
 export interface UserFromApiSearch {

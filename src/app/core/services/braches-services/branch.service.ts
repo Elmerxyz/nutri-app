@@ -3,7 +3,6 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { map, Observable } from 'rxjs';
 import { environmentDev } from '../../../environments/environment.development';
 import { Filter } from '../../interfaces/api/filters';
-import { ExportFilesService } from '../files-services/export-files.service';
 
 @Injectable({
   providedIn: 'root',
@@ -11,7 +10,6 @@ import { ExportFilesService } from '../files-services/export-files.service';
 export class BranchService {
   private readonly _apiUrl: String = environmentDev.apiUrl;
   private readonly _httpclient = inject(HttpClient);
-  private readonly _exportFilesService = inject(ExportFilesService);
 
   getBranches(page: number, size: number, filters?: Filter[]): Observable<any> {
     // Construir params base
@@ -31,34 +29,6 @@ export class BranchService {
       params,
       withCredentials: true,
     });
-  }
-  exportToExcel(page: number, size: number): Observable<any> {
-    return this.getBranches(page, size).pipe(
-      map((response) => {
-        const selectedColumns = [
-          'address',
-          'status',
-          'description',
-          'createdAt',
-          'updatedAt',
-        ];
-        const headers = {
-          address: 'Dirección',
-          status: 'Estado',
-          description: 'Descripción',
-          createdAt: 'Creado',
-          updatedAt: 'Actualizado',
-        };
-        this._exportFilesService.exportToExcel(
-          response.data.branches,
-          headers,
-          selectedColumns,
-          'sucursales'
-        );
-
-        return response;
-      })
-    );
   }
 
   createBranch(branch: any): Observable<any> {
