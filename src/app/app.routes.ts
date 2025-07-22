@@ -8,6 +8,7 @@ import { MyRecipesComponent } from './features/recipes-feature/pages/my-recipes/
 import { RecomendationsComponent } from './features/recomendatios-feature/recomendations/recomendations.component';
 import { RecipesComponent } from './features/recipes-feature/pages/recipes/recipes.component';
 import { ProfileComponent } from './features/user-feature/profile/profile.component';
+import { RecipeDetailComponent } from './features/recipes-feature/pages/recipe-detail/recipe-detail.component';
 
 export const routes: Routes = [
   { path: '', redirectTo: 'auth/login', pathMatch: 'full' },
@@ -28,9 +29,8 @@ export const routes: Routes = [
       {
         path: 'recipes',
         component: RecipesComponent,
-        // canActivate: [authGuardAdmin],
       },
-
+      { path: 'recipes/:id', component: RecipeDetailComponent },
       {
         path: 'contacts',
         component: ContactsComponent,

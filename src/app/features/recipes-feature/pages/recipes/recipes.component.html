@@ -1,9 +1,11 @@
-<main class="bg-white dark:bg-transparent  min-h-screen">
+<main class="bg-white dark:bg-transparent min-h-screen">
   <section class="border-gray-200 w-full">
     <div class="mx-auto">
       <!-- Título Principal -->
       <div>
-        <h1 class="text-xl font-bold text-gray-900 dark:text-gray-100 pb-3">Recetas</h1>
+        <h1 class="text-xl font-bold text-gray-900 dark:text-gray-100 pb-3">
+          Recetas
+        </h1>
       </div>
 
       <!-- Filtros Mejorados -->
@@ -11,7 +13,9 @@
         <div class="flex flex-col lg:flex-row gap-6">
           <!-- Filtro por Condición Médica -->
           <div class="flex-1">
-            <label class="block text-sm font-semibold text-gray-700 dark:text-gray-300 pb-3">
+            <label
+              class="block text-sm font-semibold text-gray-700 dark:text-gray-300 pb-3"
+            >
               <i class="pi pi-heart text-primary-500 mr-2"></i>
               Condición Médica
             </label>
@@ -27,7 +31,9 @@
 
           <!-- Filtro por Tipo de Comida -->
           <div class="flex-1">
-            <label class="block text-sm font-semibold text-gray-700 dark:text-gray-300 pb-3">
+            <label
+              class="block text-sm font-semibold text-gray-700 dark:text-gray-300 pb-3"
+            >
               <i class="pi pi-clock text-primary-500 mr-2"></i>
               Tipo de Comida
             </label>
@@ -73,10 +79,14 @@
       </div>
 
       <!-- Resultados y Paginador -->
-      <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
+      <div
+        class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4"
+      >
         <!-- Contador de resultados -->
         <div class="flex items-center gap-4">
-          <div class="bg-primary-100 dark:bg-primary-900 text-primary-800 dark:text-primary-200 px-4 py-2 rounded-lg">
+          <div
+            class="bg-primary-100 dark:bg-primary-900 text-primary-800 dark:text-primary-200 px-4 py-2 rounded-lg"
+          >
             <span class="font-bold">{{ filteredMeals.length }}</span>
             <span class="ml-1">{{
               filteredMeals.length === 1
@@ -122,7 +132,7 @@
     class="grid grid-cols-1 sm:grid-cols-2 pt-4 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-4 sm:gap-6"
   >
     @for (item of mealPlan.meals; track $index) {
-    <app-recipe-item [meal]="item" />
+    <app-recipe-item [meal]="item" (recipeId)="viewRecipeDetail($event)" />
     }
   </section>
 </main>
