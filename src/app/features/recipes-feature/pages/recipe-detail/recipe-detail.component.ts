@@ -1,7 +1,7 @@
 import { Component, inject, signal } from '@angular/core';
 import { RecipesServicesService } from '../../../../core/services/recipes-services/recipes-services.service';
 import { ActivatedRoute, RouterLink } from '@angular/router';
-
+import { Meta, Title } from '@angular/platform-browser';
 @Component({
   selector: 'app-recipe-detail',
   imports: [RouterLink],
@@ -15,6 +15,8 @@ export class RecipeDetailComponent {
   recipe = signal<any | null>(null);
   loading = signal<boolean>(false);
   error = signal<string | null>(null);
+  private readonly _meta = inject(Meta);
+  private readonly _title = inject(Title);
 
   ngOnInit(): void {
     // Obtener el ID de la receta desde los parámetros de la URL
@@ -35,6 +37,27 @@ export class RecipeDetailComponent {
       next: (response) => {
         if (response && response.data) {
           this.recipe.set(response.data);
+          this._title.setTitle(`Receta: ${this.recipe().name} | NutriApp`);
+          this._meta.updateTag({
+            name: 'description',
+            content: this.recipe().description || this.recipe().name,
+          });
+          this._meta.updateTag({
+            property: 'og:title',
+            content: this.recipe().name,
+          });
+          this._meta.updateTag({
+            property: 'og:image',
+            content: this.recipe().thumbnailUrl,
+          });
+          this._meta.updateTag({
+            property: 'og:description',
+            content: this.recipe().description || this.recipe().name,
+          });
+          this._meta.updateTag({
+            property: 'og:url',
+            content: window.location.href,
+          });
         } else {
           this.error.set('No se encontraron datos de la receta');
         }

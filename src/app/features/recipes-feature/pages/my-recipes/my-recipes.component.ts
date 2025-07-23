@@ -1,5 +1,5 @@
-import { Component } from '@angular/core';
-
+import { Component, inject } from '@angular/core';
+import { Title } from '@angular/platform-browser';
 @Component({
   selector: 'app-my-recipes',
   imports: [],
@@ -7,5 +7,9 @@ import { Component } from '@angular/core';
   styleUrl: './my-recipes.component.scss'
 })
 export class MyRecipesComponent {
+  private readonly _title = inject(Title);
 
+  ngOnInit(): void {
+    this._title.setTitle('Mis Recetas | NutriApp');
+  }
 }

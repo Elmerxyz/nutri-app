@@ -1,7 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { Contact } from '../interfaces/contact.interface';
 import { ContactCardComponent } from '../contact-card/contact-card.component';
-
+import { Title } from '@angular/platform-browser';
 @Component({
   selector: 'app-contacts',
   imports: [ContactCardComponent],
@@ -9,6 +9,12 @@ import { ContactCardComponent } from '../contact-card/contact-card.component';
   styleUrl: './contacts.component.scss',
 })
 export class ContactsComponent {
+
+private readonly _title = inject(Title);
+
+  ngOnInit(): void {
+    this._title.setTitle('Contactos | NutriApp');
+  }
   contacts: Contact[] = [
     {
       id: '1',

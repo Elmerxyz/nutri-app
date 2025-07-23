@@ -14,6 +14,7 @@ import { ButtonComponent } from '../../../../shared/components/ui/button/button.
 import { RecipesServicesService } from '../../../../core/services/recipes-services/recipes-services.service';
 import { finalize } from 'rxjs';
 import { Router } from '@angular/router';
+import { Title } from '@angular/platform-browser';
 interface FilterOption {
   label: string;
   value: string;
@@ -46,6 +47,7 @@ interface ApiResponse {
 export class RecipesComponent {
   private readonly _recipesServices = inject(RecipesServicesService);
   private readonly _router = inject(Router);
+  private readonly _title = inject(Title);
 
   // Estado de carga
   loading: boolean = false;
@@ -69,14 +71,13 @@ export class RecipesComponent {
     { label: 'Todos', value: 'all' },
     { label: 'Gastritis', value: 'gastritis' },
     { label: 'Anemia', value: 'anemia' },
-    { label: 'Alto en proteína', value: 'alto en proteína' },
   ];
 
   mealTypeOptions: FilterOption[] = [
     { label: 'Todos', value: 'all' },
-    { label: 'Desayuno', value: 'breakfast' },
-    { label: 'Almuerzo', value: 'lunch' },
-    { label: 'Cena', value: 'dinner' },
+    { label: 'Desayuno', value: 'desayuno' },
+    { label: 'Almuerzo', value: 'almuerzo' },
+    { label: 'Cena', value: 'cena' },
   ];
 
   // Valores seleccionados
@@ -91,6 +92,7 @@ export class RecipesComponent {
   ngOnInit() {
     // Cargar recetas al iniciar el componente
     this.loadRecipes();
+    this._title.setTitle('Recetas | NutriApp');
   }
 
   loadRecipes(nextPageToken?: string, pageSize: number = 10): void {
