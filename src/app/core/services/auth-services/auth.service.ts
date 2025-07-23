@@ -76,7 +76,7 @@ export class AuthService {
     const provider = new GoogleAuthProvider();
     return from(signInWithPopup(this._auth, provider)).pipe(
       switchMap((result) => {
-        const user = result.user;
+        const user = result.user; 
         this.currentUser.next(user);
         localStorage.setItem('user', JSON.stringify(user));
         return of(user);

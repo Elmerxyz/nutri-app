@@ -24,6 +24,12 @@ export class LocalstorageService {
     return user.numDni;
   }
 
+  getTokenId(): string {
+    const user = this.getUserAuthorized();
+
+    return user.stsTokenManager.accessToken;
+  }
+
   getUserId(): string {
     const user = this.getUserAuthorized();
     return user.userId;
